@@ -88,3 +88,5 @@ D:\Maratona Xamarin\Projeto\MaratonaXamarin\PurchaseOrderManager\PurchaseOrderMa
 D:\Maratona Xamarin\Projeto\MaratonaXamarin\PurchaseOrderManager\PurchaseOrderManager\PurchaseOrderManager\bin\Debug\PurchaseOrderManager.dll.mdb
 D:\Maratona Xamarin\Projeto\MaratonaXamarin\PurchaseOrderManager\PurchaseOrderManager\PurchaseOrderManager\obj\Debug\PurchaseOrderManager.dll.mdb
 D:\Maratona Xamarin\Projeto\MaratonaXamarin\PurchaseOrderManager\PurchaseOrderManager\PurchaseOrderManager\bin\Debug\PurchaseOrderManager.dll.mdb
+D:\Maratona Xamarin\Projeto\PurchaseOrderManager\PurchaseOrderManager\PurchaseOrderManager\obj\Debug\PurchaseOrderManager.dll.mdb
+D:\Maratona Xamarin\Projeto\PurchaseOrderManager\PurchaseOrderManager\PurchaseOrderManager\bin\Debug\PurchaseOrderManager.dll.mdb
