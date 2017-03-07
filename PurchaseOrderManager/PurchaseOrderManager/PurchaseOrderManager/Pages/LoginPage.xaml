@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurchaseOrderManager.Pages.LoginPage" Appearing="Login_OnAppearing"
+             Title="Login">
+  <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+    <Image HorizontalOptions="Fill" VerticalOptions="Fill" Source="background.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" />
+    <StackLayout x:Name="LoginLayout" Spacing="5" AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1" AbsoluteLayout.LayoutFlags="PositionProportional" Padding="50" WidthRequest="250">
+
+      <Label Text="Login:" TextColor="#0066cc" HorizontalOptions="FillAndExpand"/>
+      <Entry x:Name="LoginEntry" TextColor="#0066cc" BackgroundColor="#99ccff"  HorizontalOptions="FillAndExpand" FontAttributes="Bold"/>
+      <Label Text=" " HorizontalOptions="FillAndExpand" />
+
+      <Label Text="Password:" TextColor="#0066cc" HorizontalOptions="FillAndExpand" />
+      <Entry x:Name="PwdEntry" TextColor="#00264d" BackgroundColor="#99ccff" HorizontalOptions="FillAndExpand"  FontAttributes="Bold" IsPassword="True"/>
+
+      <Label Text=" " HorizontalOptions="FillAndExpand" />
+      <Image BackgroundColor="#0066cc" HeightRequest="1" HorizontalOptions="FillAndExpand"/>
+      <Label Text=" " HorizontalOptions="FillAndExpand" />
+
+      <Button Text="OK" TextColor="#00264d" BackgroundColor="#0066cc" FontAttributes="Bold" Clicked="Button_OnClicked" />
+      <Label Text=" " HorizontalOptions="FillAndExpand" />
+
+      <ActivityIndicator x:Name="Indicator" IsRunning="{Binding IsExecuting}" IsVisible="{Binding IsExecuting}" Color="#0066cc" />
+
+    </StackLayout>
+  </AbsoluteLayout>
+</ContentPage>

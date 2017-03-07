@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PurchaseOrderManager.Pages.PurchaseOrderItemPage"
+             Appearing="PurchaseOrderItemPage_OnAppearing"
+             Title="Itens do Pedido">
+
+  <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+    <Image HorizontalOptions="Fill" VerticalOptions="Fill" Source="background.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" />
+
+    <StackLayout x:Name="LoginLayout" Spacing="5" AbsoluteLayout.LayoutBounds="0.5, 0, 0.9, 0.95" AbsoluteLayout.LayoutFlags="PositionProportional, SizeProportional" Padding="20,0,20,0">
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Label Text="Cliente: " FontSize="12"/>
+        <Label Text="{Binding Client}" FontSize="12" FontAttributes="Bold" />
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Label Text="Fornecedor: " FontSize="12"/>
+        <Label Text="{Binding Vendor}" FontSize="12" FontAttributes="Bold"/>
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Label Text="Data: " FontSize="12"/>
+        <Label Text="{Binding Date}" FontSize="12" FontAttributes="Bold"/>
+      </StackLayout>
+
+      <Image BackgroundColor="#0066cc" HeightRequest="1" HorizontalOptions="FillAndExpand"/>
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Label Text="Item " FontSize="14" TextColor="Navy" FontAttributes="Bold"/>
+        <Label Text="{Binding Item}" FontSize="14" TextColor="Navy" FontAttributes="Bold"/>
+      </StackLayout>
+
+      <StackLayout HorizontalOptions="FillAndExpand" Spacing="1">
+        <Label Text="Código do Produto: " FontSize="12"/>
+        <Entry Text="{Binding ProductCode}" FontSize="12" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#99ccff"/>
+        
+        <Label Text=" " FontSize="10"/>
+        
+        <Label Text="Descrição do Produto: " FontSize="12"/>
+        <Entry Text="{Binding ProductDesc}" FontSize="12" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#99ccff"/>
+
+        <Label Text=" " FontSize="10"/>
+        
+        <Label Text="Quantidade: " FontSize="12"/>
+        <Entry Text="{Binding Qtd}" FontSize="12" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#99ccff"/>
+
+        <Label Text=" " FontSize="12"/>
+
+        <Label Text="Valor (R$): " FontSize="12"/>
+        <Entry Text="{Binding Value}" FontSize="12" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#99ccff"/>
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <Label Text="total do Item: R$ " FontSize="14" TextColor="Navy" FontAttributes="Bold"/>
+        <Label Text="{Binding Total}" FontSize="14" TextColor="Navy" FontAttributes="Bold"/>
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="5">
+        <Button Text="Salvar" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#0066cc" Clicked="Button_OnClicked"/>
+        <Button Text="Excluir item" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#0066cc" Clicked="Button2_OnClicked"/>
+      </StackLayout>
+
+      <ActivityIndicator x:Name="Indicator" Color="#0066cc" />
+
+    </StackLayout>
+
+  </AbsoluteLayout>
+</ContentPage>

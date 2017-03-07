@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:PurchaseOrderManager.ViewModel;assembly=PurchaseOrderManager"
+             x:Class="PurchaseOrderManager.Pages.PurchaseOrderPage"
+             Appearing="PurchaseOrderPage_OnAppearing"
+             Title="Pedido">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <viewModel:ListKeyBacgroundColorConverter x:Key="MyColorConverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+    <Image HorizontalOptions="Fill" VerticalOptions="Fill" Source="background.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" />
+
+    <StackLayout x:Name="LoginLayout" Spacing="5" Margin="0" AbsoluteLayout.LayoutBounds="0.5, 0, -1, 0.95" AbsoluteLayout.LayoutFlags="PositionProportional, HeightProportional" Padding="25">
+
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="2">
+        <Label Text="Cliente: " FontSize="14" VerticalOptions="Center" WidthRequest="90"/>
+        <Entry Text="{Binding Client}" HorizontalOptions="FillAndExpand" BackgroundColor="White"/>
+      </StackLayout>
+      
+      <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="2">
+        <Label Text="Fornecedor: " FontSize="14" VerticalOptions="Center" WidthRequest="90"/>
+        <Entry Text="{Binding Vendor}" HorizontalOptions="FillAndExpand" BackgroundColor="White"/>
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" Spacing="1" Padding="10">
+
+        <Label Text="Itens: " FontSize="12"/>
+        <Label Text="{Binding ItemsCount}"  FontSize="12" FontAttributes="Bold"/>
+
+        <Label Text="   " FontSize="12"/>
+
+        <Label Text="Valor: R$ " FontSize="12"/>
+        <Label Text="{Binding ItemsTotal}" FontSize="12" FontAttributes="Bold"/>
+
+        <Label Text="   " FontSize="12"/>
+
+        <Label Text="Data: " FontSize="12"/>
+        <Label Text="{Binding Date}" FontSize="12" FontAttributes="Bold"/>
+
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" Spacing="2">
+        <Button Text="Salvar" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#0066cc" Clicked="Button_OnClicked"/>
+        <Button Text="Novo item" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#0066cc" Clicked="Button2_OnClicked"/>
+      </StackLayout>
+
+      <Image BackgroundColor="#0066cc" HeightRequest="1" HorizontalOptions="FillAndExpand"/>
+
+      <ListView x:Name="PoItemListView" IsEnabled="{Binding IsNotBusy}" ItemsSource="{Binding Items}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Padding="10,0,10,0" BackgroundColor="{Binding Index, Converter={StaticResource MyColorConverter}}" Spacing="5">
+
+                <StackLayout Orientation="Horizontal">
+                  <Label Text="Item: " FontSize="14"/>
+                  <Label Text="{Binding Item}" FontAttributes="Bold" FontSize="14"/>
+                  <Label Text="   " FontSize="14"/>
+                  <Label Text="Prod: " FontSize="14"/>
+                  <Label Text="{Binding ProductCode}" FontAttributes="Bold" FontSize="14"/>
+                  <Label Text=" " FontSize="14"/>
+                  <Label Text="{Binding ProductDesc}" FontAttributes="Bold" FontSize="14"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                  <Label Text="Qtde: " FontSize="12"/>
+                  <Label Text="{Binding Qtd}" FontSize="12" />
+                  <Label Text="   " FontSize="12"/>
+                  <Label Text="Valor: R$ " FontSize="12"/>
+                  <Label Text="{Binding Value}" FontSize="12" />
+                  <Label Text="   " FontSize="12"/>
+                  <Label Text="Total: R$ " FontSize="12"/>
+                  <Label Text="{Binding Total}" FontSize="12" />
+                </StackLayout>
+
+                <Label Text="   " FontSize="10"/>
+
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+      <ActivityIndicator x:Name="Indicator" Color="#0066cc" />
+
+    </StackLayout>
+
+  </AbsoluteLayout>
+</ContentPage>

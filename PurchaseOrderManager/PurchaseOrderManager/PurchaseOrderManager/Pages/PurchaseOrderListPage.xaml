@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:PurchaseOrderManager.ViewModel;assembly=PurchaseOrderManager"
+             x:Class="PurchaseOrderManager.Pages.PurchaseOrderListPage"
+             Appearing="PurchaseOrderListPage_OnAppearing"
+             Title="Pedidos">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <viewModel:ListKeyBacgroundColorConverter x:Key="MyColorConverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" >
+    <Image HorizontalOptions="Fill" VerticalOptions="Fill" Source="background.jpg" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" />
+
+    <StackLayout x:Name="LoginLayout" Spacing="15" Margin="10" AbsoluteLayout.LayoutBounds="0.5, 0, -1, 0.95" AbsoluteLayout.LayoutFlags="PositionProportional, HeightProportional" Padding="5">
+
+      <StackLayout Orientation="Horizontal">
+        <Button x:Name="RefreshButton" Text="Refresh" Command="{Binding LoadDirectoryCommand}" IsVisible="False" TextColor="#00264d" BackgroundColor="#0066cc" FontAttributes="Bold" />
+        <Button Text="Novo Pedido" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" TextColor="#00264d" BackgroundColor="#0066cc" Clicked="ButtonNew_OnClicked"/>
+      </StackLayout>
+
+      <ListView x:Name="PoListView" IsEnabled="{Binding IsNotBusy}" IsPullToRefreshEnabled="True" RefreshCommand="{Binding LoadDirectoryCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}" ItemsSource="{Binding PurchaseOrders}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout BackgroundColor="{Binding Index, Converter={StaticResource MyColorConverter}}" Spacing="5">
+
+                <StackLayout Orientation="Horizontal" Spacing="1">
+                  <Label Text="Cliente: " FontSize="14"/>
+                  <Label Text="{Binding Client}" FontAttributes="Bold" FontSize="14"/>
+                  <Label Text="   " FontSize="14"/>
+                  <Label Text="Data: " FontSize="14"/>
+                  <Label Text="{Binding Date}" FontAttributes="Bold" FontSize="14" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Spacing="1">
+                  <Label Text="Fornecedor: " FontSize="14"/>
+                  <Label Text="{Binding Vendor}" FontAttributes="Bold" FontSize="14"/>
+                  <Label Text="   " FontSize="14"/>
+                  <Label Text="Valor: R$ " FontSize="14"/>
+                  <Label Text="{Binding ItemsTotal}" FontAttributes="Bold" FontSize="14" />
+                </StackLayout>
+
+                <Label Text="   " FontSize="10"/>
+
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+      <ActivityIndicator x:Name="Indicator" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#0066cc" />
+
+    </StackLayout>
+    
+  </AbsoluteLayout>
+</ContentPage>
