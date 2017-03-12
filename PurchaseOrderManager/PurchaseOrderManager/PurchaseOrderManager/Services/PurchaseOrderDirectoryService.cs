@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using PurchaseOrderManager.Model;
@@ -11,28 +13,36 @@ namespace PurchaseOrderManager.Services
         {
             await Task.Delay(50).ConfigureAwait(false);
             var directory = new PurchaseOrderDirectory();
-            var azureClient = new AzureClient();
 
-            var poList = await azureClient.GetPOs(true);
-
-            await azureClient.SyncPoItemsAsync();
-
-            var purchaseOrders = poList as PurchaseOrder[] ?? poList.ToArray();
-
-            foreach (var purchaseOrder in purchaseOrders)
+            try
             {
-                var poKey = purchaseOrder.Id;
-                purchaseOrder.Items = new ObservableCollection<PurchaseOrderItem>(await azureClient.GetPoItems(poKey));
-                var index = 0;
-                foreach (var item in purchaseOrder.Items)
+                var azureClient = new AzureClient();
+
+                var poList = await azureClient.GetPOs(true);
+                
+                var purchaseOrders = poList as PurchaseOrder[] ?? poList.ToArray();
+
+                foreach (var purchaseOrder in purchaseOrders)
                 {
-                    item.Index = index;
-                    item.PurchaseOrder = purchaseOrder;
-                    index++;
+                    var poKey = purchaseOrder.Id;
+                    purchaseOrder.Items =
+                        new ObservableCollection<PurchaseOrderItem>(await azureClient.GetPoItems(poKey));
+                    var index = 0;
+                    foreach (var item in purchaseOrder.Items)
+                    {
+                        item.Index = index;
+                        item.PurchaseOrder = purchaseOrder;
+                        index++;
+                    }
                 }
+
+                directory.PurchaseOrders = new ObservableCollection<PurchaseOrder>(purchaseOrders);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
 
-            directory.PurchaseOrders = new ObservableCollection<PurchaseOrder>(purchaseOrders);
             return directory;
         }
 

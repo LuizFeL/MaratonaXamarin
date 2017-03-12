@@ -14,19 +14,27 @@ namespace PurchaseOrderManager.Pages
 
         public PurchaseOrderPage(PurchaseOrder po, PurchaseOrderVM vm)
         {
-            InitializeComponent();
-            Indicator.WidthRequest = Device.OS == TargetPlatform.Windows ? 200 : 80;
-            BindingContext = po;
-            _purchaseOrder = po;
-            _purchaseOrderVM = vm;
-            Indicator.IsRunning = Indicator.IsVisible = false;
-            PoItemListView.ItemSelected += (sender, args) =>
+            try
             {
-                var selectedItem = PoItemListView.SelectedItem as PurchaseOrderItem;
-                if (selectedItem == null) return;
-                Navigation.PushAsync(new PurchaseOrderItemPage(_purchaseOrderVM, _purchaseOrder, selectedItem));
-                PoItemListView.SelectedItem = null;
-            };
+
+                InitializeComponent();
+                Indicator.WidthRequest = Device.OS == TargetPlatform.Windows ? 200 : 80;
+                BindingContext = po;
+                _purchaseOrder = po;
+                _purchaseOrderVM = vm;
+                Indicator.IsRunning = Indicator.IsVisible = false;
+                PoItemListView.ItemSelected += (sender, args) =>
+                {
+                    var selectedItem = PoItemListView.SelectedItem as PurchaseOrderItem;
+                    if (selectedItem == null) return;
+                    Navigation.PushAsync(new PurchaseOrderItemPage(_purchaseOrderVM, _purchaseOrder, selectedItem));
+                    PoItemListView.SelectedItem = null;
+                };
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private async void Button_OnClicked(object sender, EventArgs e)
@@ -50,18 +58,38 @@ namespace PurchaseOrderManager.Pages
 
         private void Button2_OnClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PurchaseOrderItemPage(_purchaseOrderVM, _purchaseOrder, new PurchaseOrderItem { Item = _purchaseOrder.GetLastItem(), PoKey = _purchaseOrder.Id, PurchaseOrder = _purchaseOrder }));
+            try
+            {
+                Navigation.PushAsync(new PurchaseOrderItemPage(_purchaseOrderVM, _purchaseOrder,
+                    new PurchaseOrderItem
+                    {
+                        Item = _purchaseOrder.GetLastItem(),
+                        PoKey = _purchaseOrder.Id,
+                        PurchaseOrder = _purchaseOrder
+                    }));
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private void PurchaseOrderPage_OnAppearing(object sender, EventArgs e)
         {
-            if (ToolbarItems.Any(x => x.Text == App.CurrentUser.Id)) return;
-            ToolbarItems.Add(new ToolbarItem
+            try
             {
-                Icon = "usericon.png",
-                Text = App.CurrentUser.Id,
-                Command = new Command(() => DisplayAlert("Login info", App.CurrentUser.Id, "OK"))
-            });
+                if (ToolbarItems.Any(x => x.Text == App.CurrentUser.Id)) return;
+                ToolbarItems.Add(new ToolbarItem
+                {
+                    Icon = "usericon.png",
+                    Text = App.CurrentUser.Id,
+                    Command = new Command(() => DisplayAlert("Login info", App.CurrentUser.Id, "OK"))
+                });
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
         }
     }
 }

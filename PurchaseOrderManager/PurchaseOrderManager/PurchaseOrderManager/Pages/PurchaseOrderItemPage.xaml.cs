@@ -15,13 +15,21 @@ namespace PurchaseOrderManager.Pages
 
         public PurchaseOrderItemPage(PurchaseOrderVM vm, PurchaseOrder po, PurchaseOrderItem item)
         {
-            InitializeComponent();
-            Indicator.WidthRequest = Device.OS == TargetPlatform.Windows ? 200 : 80;
-            _purchaseOrderVM = vm;
-            _purchaseOrderItem = item;
-            _purchaseOrder = po;
-            Indicator.IsRunning = Indicator.IsVisible = false;
-            BindingContext = item;
+            try
+            {
+                InitializeComponent();
+                Indicator.WidthRequest = Device.OS == TargetPlatform.Windows ? 200 : 80;
+                _purchaseOrderVM = vm;
+                _purchaseOrderItem = item;
+                _purchaseOrder = po;
+                Indicator.IsRunning = Indicator.IsVisible = false;
+                BindingContext = item;
+
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private async void Button_OnClicked(object sender, EventArgs e)
@@ -87,13 +95,20 @@ namespace PurchaseOrderManager.Pages
 
         private void PurchaseOrderItemPage_OnAppearing(object sender, EventArgs e)
         {
-            if (ToolbarItems.Any(x => x.Text == App.CurrentUser.Id)) return;
-            ToolbarItems.Add(new ToolbarItem
+            try
             {
-                Icon = "usericon.png",
-                Text = App.CurrentUser.Id,
-                Command = new Command(() => DisplayAlert("Login info", App.CurrentUser.Id, "OK"))
-            });
+                if (ToolbarItems.Any(x => x.Text == App.CurrentUser.Id)) return;
+                ToolbarItems.Add(new ToolbarItem
+                {
+                    Icon = "usericon.png",
+                    Text = App.CurrentUser.Id,
+                    Command = new Command(() => DisplayAlert("Login info", App.CurrentUser.Id, "OK"))
+                });
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "OK");
+            }
         }
     }
 }

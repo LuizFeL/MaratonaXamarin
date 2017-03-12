@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using PurchaseOrderManager.Model;
@@ -49,6 +50,10 @@ namespace PurchaseOrderManager.ViewModel
                         index++;
                     }
                 });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
             finally
             {
