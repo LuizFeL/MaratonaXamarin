@@ -3,3 +3,4 @@ PurchaseOrderManager/PurchaseOrderManager/PurchaseOrderManager.Droid/obj/
 PurchaseOrderManager/PurchaseOrderManager/PurchaseOrderManager.UWP/obj/
 PurchaseOrderManager/PurchaseOrderManager/PurchaseOrderManager.UWP/bin/
 PurchaseOrderManager/packages/
+*.psd

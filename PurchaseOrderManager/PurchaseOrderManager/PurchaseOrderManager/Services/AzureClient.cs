@@ -17,10 +17,8 @@ namespace PurchaseOrderManager.Services
         private readonly IMobileServiceSyncTable<PurchaseOrder> _purchaseOrderTable;
         private readonly IMobileServiceSyncTable<PurchaseOrderItem> _purchaseOrderItemTable;
         const string DbPath = "data.db";
-        private const string ServiceUri = "http://mod5sample.azurewebsites.net/";
-
-
-
+        private const string ServiceUri = "http://maratonaxamarinpom.azurewebsites.net/";
+        
         public AzureClient()
         {
             _client = new MobileServiceClient(ServiceUri);
