@@ -18,7 +18,7 @@ namespace PurchaseOrderManager.Services
         private readonly IMobileServiceSyncTable<PurchaseOrderItem> _purchaseOrderItemTable;
         const string DbPath = "data.db";
         private const string ServiceUri = "http://maratonaxamarinpom.azurewebsites.net/";
-        
+
         public AzureClient()
         {
             _client = new MobileServiceClient(ServiceUri);
@@ -30,9 +30,6 @@ namespace PurchaseOrderManager.Services
             _loginTable = _client.GetSyncTable<Login>();
             _purchaseOrderTable = _client.GetSyncTable<PurchaseOrder>();
             _purchaseOrderItemTable = _client.GetSyncTable<PurchaseOrderItem>();
-#if DEBUG
-            Save(new Login { Id = "LuizFel", Password = LoginService.Encripty("123") });
-#endif
         }
 
 
@@ -43,7 +40,7 @@ namespace PurchaseOrderManager.Services
             try
             {
                 if (Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
-                    await SyncPOsAsync();
+                    await SyncLoginsAsync();
 
                 return await _loginTable.ToEnumerableAsync();
             }
@@ -59,7 +56,7 @@ namespace PurchaseOrderManager.Services
             try
             {
                 if (Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
-                    await SyncPOsAsync();
+                    await SyncPoItemsAsync();
 
                 return await _purchaseOrderItemTable.ToEnumerableAsync();
             }
@@ -69,14 +66,15 @@ namespace PurchaseOrderManager.Services
             }
         }
 
-        public async Task<IEnumerable<PurchaseOrder>> GetPOs()
+        public async Task<IEnumerable<PurchaseOrder>> GetPOs(bool getItens)
         {
             var empty = new PurchaseOrder[0];
             try
             {
-                if (Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
-                    await SyncPOsAsync();
-
+                if (!Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
+                    return await _purchaseOrderTable.ToEnumerableAsync();
+                await SyncPOsAsync();
+                if (getItens) await SyncPoItemsAsync();
                 return await _purchaseOrderTable.ToEnumerableAsync();
             }
             catch (Exception)
@@ -244,7 +242,7 @@ namespace PurchaseOrderManager.Services
 
         public async Task CleanLoginData()
         {
-            await _purchaseOrderTable.PurgeAsync("allLogins", _loginTable.CreateQuery(), new System.Threading.CancellationToken());
+            await _loginTable.PurgeAsync("allLogins", _loginTable.CreateQuery(), new System.Threading.CancellationToken());
         }
 
 

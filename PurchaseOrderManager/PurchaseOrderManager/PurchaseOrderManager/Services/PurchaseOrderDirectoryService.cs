@@ -13,7 +13,7 @@ namespace PurchaseOrderManager.Services
             var directory = new PurchaseOrderDirectory();
             var azureClient = new AzureClient();
 
-            var poList = await azureClient.GetPOs();
+            var poList = await azureClient.GetPOs(true);
 
             await azureClient.SyncPoItemsAsync();
 
