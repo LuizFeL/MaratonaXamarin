@@ -19,10 +19,17 @@ namespace PurchaseOrderManager.Services
 
         public static async Task<Login> FindLogin(string loginName)
         {
-            await Task.Delay(50).ConfigureAwait(false);
-            var client = new AzureClient();
-            var login = await client.GetLogin(loginName);
-            return login;
-        }        
+            try
+            {
+                await Task.Delay(50).ConfigureAwait(false);
+                var client = new AzureClient();
+                var login = await client.GetLogin(loginName);
+                return login;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

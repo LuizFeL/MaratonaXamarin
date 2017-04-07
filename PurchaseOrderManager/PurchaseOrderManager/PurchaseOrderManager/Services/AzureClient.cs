@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using PurchaseOrderManager.Model;
+using Xamarin.Forms;
 
 namespace PurchaseOrderManager.Services
 {
@@ -18,6 +19,11 @@ namespace PurchaseOrderManager.Services
         private readonly IMobileServiceSyncTable<PurchaseOrderItem> _purchaseOrderItemTable;
         const string DbPath = "data.db";
         private const string ServiceUri = "http://maratonaxamarinpom.azurewebsites.net/";
+
+        public static bool LoginSync { get; private set; }
+        public static bool PurchaseOrderSync { get; private set; }
+        public static bool PurchaseOrderItemSync { get; private set; }
+
 
         public AzureClient()
         {
@@ -186,13 +192,17 @@ namespace PurchaseOrderManager.Services
             try
             {
                 await _client.SyncContext.PushAsync();
-
                 await _loginTable.PullAsync("allLogins", _loginTable.CreateQuery());
+                LoginSync = true;
             }
             catch (MobileServicePushFailedException pushEx)
             {
-                if (pushEx.PushResult != null)
-                    syncErrors = pushEx.PushResult.Errors;
+                LoginSync = false;
+                if (pushEx.PushResult != null) syncErrors = pushEx.PushResult.Errors;
+            }
+            catch (Exception)
+            {
+                LoginSync = false;
             }
         }
 
@@ -204,11 +214,17 @@ namespace PurchaseOrderManager.Services
                 await _client.SyncContext.PushAsync();
 
                 await _purchaseOrderTable.PullAsync("allPOs", _purchaseOrderTable.CreateQuery());
+
+                PurchaseOrderSync = true;
             }
             catch (MobileServicePushFailedException pushEx)
             {
-                if (pushEx.PushResult != null)
-                    syncErrors = pushEx.PushResult.Errors;
+                PurchaseOrderSync = false;
+                if (pushEx.PushResult != null) syncErrors = pushEx.PushResult.Errors;
+            }
+            catch (Exception)
+            {
+                PurchaseOrderSync = false;
             }
         }
 
@@ -220,11 +236,17 @@ namespace PurchaseOrderManager.Services
                 await _client.SyncContext.PushAsync();
 
                 await _purchaseOrderItemTable.PullAsync("allPoItems", _purchaseOrderItemTable.CreateQuery());
+
+                PurchaseOrderItemSync = true;
             }
             catch (MobileServicePushFailedException pushEx)
             {
-                if (pushEx.PushResult != null)
-                    syncErrors = pushEx.PushResult.Errors;
+                PurchaseOrderItemSync = false;
+                if (pushEx.PushResult != null) syncErrors = pushEx.PushResult.Errors;
+            }
+            catch (Exception)
+            {
+                PurchaseOrderItemSync = false;
             }
         }
 

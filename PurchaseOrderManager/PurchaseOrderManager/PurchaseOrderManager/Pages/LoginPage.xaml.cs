@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using PurchaseOrderManager.Model;
 using PurchaseOrderManager.Services;
 using Xamarin.Forms;
 
@@ -8,6 +9,12 @@ namespace PurchaseOrderManager.Pages
 {
     public partial class LoginPage
     {
+        private readonly ToolbarItem _azureSyncToolbarItem = new ToolbarItem
+        {
+            Icon = "azure_on.png",
+            Text = "Status: ONLINE"
+        };
+
         private bool _isExec;
 
         public bool IsExecuting
@@ -35,11 +42,15 @@ namespace PurchaseOrderManager.Pages
         private void Login_OnAppearing(object sender, EventArgs e)
         {
             IsExecuting = false;
+
 #if DEBUG
             LoginEntry.Text = "LuizFel";
             PwdEntry.Text = "123";
 #endif
+
             App.CurrentUser = null;
+            UpdateLoginStatus();
+            if (ToolbarItems.All(x => !x.Text.StartsWith("Status: "))) ToolbarItems.Add(_azureSyncToolbarItem);
 
             if (ToolbarItems.Any(x => x.Text == "Atualizar Logins")) return;
             ToolbarItems.Add(new ToolbarItem
@@ -50,9 +61,16 @@ namespace PurchaseOrderManager.Pages
                 {
                     IsExecuting = true;
                     await new AzureClient().GetLogins();
+                    UpdateLoginStatus();
                     IsExecuting = false;
                 })
             });
+        }
+
+        private void UpdateLoginStatus()
+        {
+            _azureSyncToolbarItem.Icon = AzureClient.LoginSync ? "azure_on.png" : "azure_off.png";
+            _azureSyncToolbarItem.Text = "Status: " + (AzureClient.LoginSync ? "ONLINE" : "OFFLINE");
         }
 
         private async void Button_OnClicked(object sender, EventArgs e)
@@ -95,6 +113,12 @@ namespace PurchaseOrderManager.Pages
 
                 if (login == null)
                 {
+                    if (!AzureClient.LoginSync) //Only for testing
+                    {
+                        App.CurrentUser = new Login { Id = "Test", Password = "" };
+                        return true;
+                    }
+
                     Device.BeginInvokeOnMainThread(() => DisplayAlert("Error", "Login inválido", "OK"));
                     return false;
                 }

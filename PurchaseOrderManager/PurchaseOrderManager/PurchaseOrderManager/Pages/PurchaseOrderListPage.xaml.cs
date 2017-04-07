@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using PurchaseOrderManager.Model;
+using PurchaseOrderManager.Services;
 using PurchaseOrderManager.ViewModel;
 using Xamarin.Forms;
 
@@ -8,6 +9,12 @@ namespace PurchaseOrderManager.Pages
 {
     public partial class PurchaseOrderListPage
     {
+        private readonly ToolbarItem _azureSyncToolbarItem = new ToolbarItem
+        {
+            Icon = "azure_on.png",
+            Text = "Status: ONLINE"
+        };
+
         public PurchaseOrderListPage()
         {
             try
@@ -38,6 +45,11 @@ namespace PurchaseOrderManager.Pages
                     PoListView.SelectedItem = null;
                 };
 
+                if (ToolbarItems.All(x => !x.Text.StartsWith("Status: "))) ToolbarItems.Add(_azureSyncToolbarItem);
+
+                UpdateStatus();
+                PoListView.ItemDisappearing += (s, args) => { UpdateStatus(); };
+
                 if (ToolbarItems.Any(x => x.Text == App.CurrentUser.Id)) return;
 
                 ToolbarItems.Add(new ToolbarItem
@@ -53,6 +65,16 @@ namespace PurchaseOrderManager.Pages
             }
         }
 
+        private void UpdateStatus()
+        {
+            if (_azureSyncToolbarItem == null) return;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _azureSyncToolbarItem.Icon = AzureClient.PurchaseOrderSync ? "azure_on.png" : "azure_off.png";
+                _azureSyncToolbarItem.Text = "Status: " + (AzureClient.PurchaseOrderSync ? "ONLINE" : "OFFLINE");
+            });
+        }
+
         private void ButtonNew_OnClicked(object sender, EventArgs e)
         {
             try
@@ -66,5 +88,6 @@ namespace PurchaseOrderManager.Pages
                 DisplayAlert("Error", ex.Message, "OK");
             }
         }
+
     }
 }
